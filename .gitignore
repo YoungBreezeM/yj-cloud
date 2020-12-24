@@ -1,0 +1,18 @@
+# Project exclude paths
+/mall-oms/oms-api/target/
+/mall-oms/oms-biz/target/
+/mall-pms/pms-api/target/
+/mall-pms/pms-biz/target/
+/mall-pms/pms-search/target/
+/mall-sms/sms-api/target/
+/mall-ums/ums-api/target/
+/mall-ums/ums-biz/target/
+/yj-admin/admin-api/target/
+/yj-admin/admin-biz/target/
+/yj-auth/target/
+/yj-common/common-core/target/
+/yj-common/common-knife4j/target/
+/yj-common/common-mybatis/target/
+/yj-common/common-redis/target/
+/yj-common/common-web/target/
+/yj-gateway/target/

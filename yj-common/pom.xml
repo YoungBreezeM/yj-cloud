@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>yj-cloud</artifactId>
+        <groupId>com.yqf</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>yj-common</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>common-core</module>
+        <module>common-knife4j</module>
+        <module>common-redis</module>
+        <module>common-web</module>
+        <module>common-mybatis</module>
+    </modules>
+
+    <properties>
+        <swagger.version>2.9.2</swagger.version>
+        <swagger-annotations.version>1.5.21</swagger-annotations.version>
+        <swagger-models.version>1.5.21</swagger-models.version>
+        <mysql.version>8.0.19</mysql.version>
+        <druid.version>1.1.22</druid.version>
+        <mybatis-plus.version>3.3.1</mybatis-plus.version>
+        <redisson.version>3.12.5</redisson.version>
+        <common-pools.version>2.8.0</common-pools.version>
+        <yj.version>1.0.0-SNAPSHOT</yj.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- mysql -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+
+            <!-- druid -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+
+            <!-- mybatis-plus -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <!-- swagger -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-models</artifactId>
+                <version>${swagger-models.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${common-pools.version}</version>
+            </dependency>
+
+            <!-- common -->
+            <dependency>
+                <groupId>com.yqf</groupId>
+                <artifactId>common-core</artifactId>
+                <version>${yj.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.yqf</groupId>
+                <artifactId>common-knife4j</artifactId>
+                <version>${yj.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.yqf</groupId>
+                <artifactId>common-redis</artifactId>
+                <version>${yj.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.yqf</groupId>
+                <artifactId>common-web</artifactId>
+                <version>${yj.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.yqf</groupId>
+                <artifactId>common-mybatis</artifactId>
+                <version>${yj.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
