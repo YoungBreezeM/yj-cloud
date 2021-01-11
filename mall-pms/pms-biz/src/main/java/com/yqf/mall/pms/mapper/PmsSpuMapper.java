@@ -31,7 +31,7 @@ public interface PmsSpuMapper extends BaseMapper<PmsSpu> {
             "</script>")
     @Results({
             @Result(id = true, column = "id", property = "id"),
-            @Result(property = "skuList",column = "id",many = @Many(select="com.youlai.mall.pms.mapper.PmsSkuMapper.listBySpuId"))
+            @Result(property = "skuList",column = "id",many = @Many(select="com.yqf.mall.pms.mapper.PmsSkuMapper.listBySpuId"))
     })
     List<PmsSpu> list(Page<PmsSpu> page, PmsSpu spu);
 }

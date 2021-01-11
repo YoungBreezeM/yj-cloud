@@ -13,4 +13,6 @@ public interface ISysResourceService extends IService<SysResource> {
     List<SysResource> listForResourceRoles();
 
     List<TreeSelectVO> listForTreeSelect(LambdaQueryWrapper<SysResource> baseQuery);
+
+    SysResource listForResourceRolesByUrl(String url);
 }

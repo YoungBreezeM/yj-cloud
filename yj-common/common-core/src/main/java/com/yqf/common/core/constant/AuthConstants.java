@@ -62,16 +62,16 @@ public interface AuthConstants {
     /**
      * 有来商城后台管理客户端ID
      */
-    String ADMIN_CLIENT_ID="youlai-admin";
+    String ADMIN_CLIENT_ID="yj-admin";
 
 
     /**
      * 有来商城微信小程序客户端ID
      */
-    String WEAPP_CLIENT_ID="youlai-mall-weapp";
+    String WEAPP_CLIENT_ID="wx_mini_app";
 
     /**
      * 后台管理接口路径匹配
      */
-    String ADMIN_URL_PATTERN ="/youlai-admin/**" ;
+    String ADMIN_URL_PATTERN ="/yj-admin/**" ;
 }

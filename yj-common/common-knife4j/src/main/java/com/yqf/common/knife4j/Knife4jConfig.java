@@ -34,8 +34,8 @@ public class Knife4jConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("有来科技API")
-                .contact(new Contact("youlai", "https://www.youlai.store", "youlaistore@163.com"))
+                .title("易经API")
+                .contact(new Contact("易经", "http://127.0.0.1:8099", "940695836@qq.com"))
                 .version("1.0.0")
                 .build();
     }

@@ -2,7 +2,11 @@ package com.yqf.gateway.security;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
+
 import com.yqf.common.core.constant.AuthConstants;
+import com.yqf.common.core.result.Result;
+import com.yqf.common.core.system.SysResource;
+import com.yqf.gateway.service.ResourceFeignService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,10 +22,8 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import reactor.core.publisher.Mono;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 鉴权管理器
@@ -34,11 +36,17 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
 
     private RedisTemplate redisTemplate;
 
+    private ResourceFeignService resourceFeignService;
+
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> mono, AuthorizationContext authorizationContext) {
         ServerHttpRequest request = authorizationContext.getExchange().getRequest();
         String path = request.getURI().getPath();
         PathMatcher pathMatcher = new AntPathMatcher();
+        int index = path.indexOf("/",1);
+        StringBuilder realPath = new StringBuilder(path);
+        realPath.replace(index, realPath.length(), "/**");
+
 
         // 对应跨域的预检请求直接放行
         if (request.getMethod() == HttpMethod.OPTIONS) {
@@ -46,9 +54,12 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
         }
 
         // 非管理端路径无需鉴权直接放行
-        if (!pathMatcher.match(AuthConstants.ADMIN_URL_PATTERN, path)) {
-            return Mono.just(new AuthorizationDecision(true));
-        }
+//        if (!pathMatcher.match(AuthConstants.ADMIN_URL_PATTERN, path)) {
+//            return Mono.just(new AuthorizationDecision(true));
+//        }
+
+
+
 
         // token为空拒绝访问
         String token = request.getHeaders().getFirst(AuthConstants.JWT_TOKEN_HEADER);
@@ -56,18 +67,18 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
             return Mono.just(new AuthorizationDecision(false));
         }
 
-        // 从缓存取资源权限角色关系列表
-        Map<Object, Object> resourceRolesMap = redisTemplate.opsForHash().entries(AuthConstants.RESOURCE_ROLES_KEY);
-        Iterator<Object> iterator = resourceRolesMap.keySet().iterator();
+        // 动态获取资源权限角色关系列表
+        SysResource sysResource = new SysResource();
+        sysResource.setUrl(realPath.toString());
+        SysResource data = resourceFeignService.getResourceMap(sysResource).getData();
+        List<String> authorities = new ArrayList<>();
 
-        // 请求路径匹配到的资源需要的角色权限集合authorities统计
-        Set<String> authorities = new HashSet<>();
-        while (iterator.hasNext()) {
-            String pattern = (String) iterator.next();
-            if (pathMatcher.match(pattern, path)) {
-                authorities.addAll(Convert.toList(String.class, resourceRolesMap.get(pattern)));
-            }
+        for (Integer roleId : data.getRoleIds()) {
+            authorities.add(AuthConstants.AUTHORITY_PREFIX+roleId);
         }
+
+        System.out.println(authorities);
+
 
         return mono
                 .filter(Authentication::isAuthenticated)

@@ -1,7 +1,7 @@
-package com.yqf.admin.service.impl;
+package com.yqf.yjresource.service.impl;
 
 import cn.hutool.core.lang.Assert;
-import com.yqf.admin.config.MinIOProperties;
+import com.yqf.yjresource.config.MinIoProperties;
 import io.minio.*;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -14,25 +14,25 @@ import java.io.InputStream;
 
 @Slf4j
 @Component
-@EnableConfigurationProperties({MinIOProperties.class})
-public class MinIOService implements InitializingBean {
+@EnableConfigurationProperties({MinIoProperties.class})
+public class MinIoService implements InitializingBean {
 
-    private MinIOProperties minIOProperties;
+    private MinIoProperties minIoProperties;
 
-    public MinIOService(MinIOProperties minIOProperties){
-        this.minIOProperties=minIOProperties;
+    public MinIoService(MinIoProperties minIoProperties){
+        this.minIoProperties = minIoProperties;
     }
 
     private MinioClient client;
 
     @Override
     public void afterPropertiesSet() {
-        Assert.notBlank(minIOProperties.getEndpoint(), "MinIO URL 为空");
-        Assert.notBlank(minIOProperties.getAccessKey(), "MinIO accessKey为空");
-        Assert.notBlank(minIOProperties.getSecretKey(), "MinIO secretKey为空");
+        Assert.notBlank(minIoProperties.getEndpoint(), "MinIO URL 为空");
+        Assert.notBlank(minIoProperties.getAccessKey(), "MinIO accessKey为空");
+        Assert.notBlank(minIoProperties.getSecretKey(), "MinIO secretKey为空");
         this.client = new MinioClient.Builder()
-                .endpoint(minIOProperties.getEndpoint())
-                .credentials(minIOProperties.getAccessKey(), minIOProperties.getSecretKey())
+                .endpoint(minIoProperties.getEndpoint())
+                .credentials(minIoProperties.getAccessKey(), minIoProperties.getSecretKey())
                 .build();
     }
 
@@ -57,8 +57,7 @@ public class MinIOService implements InitializingBean {
                 .stream(inputStream, inputStream.available(), -1)
                 .build();
         client.putObject(putObjectArgs);
-        String path = client.getObjectUrl(bucketName, objectName);
-        return path;
+        return client.getObjectUrl(bucketName, objectName);
     }
 
     public void removeObject(String bucketName, String objectName) throws Exception {

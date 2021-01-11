@@ -1,10 +1,10 @@
-package com.yqf.admin.controller;
+package com.yqf.yjresource.controller;
 
 
 import cn.hutool.core.util.IdUtil;
-import com.yqf.admin.service.impl.MinIOService;
 import com.yqf.common.core.result.Result;
 import com.yqf.common.web.exception.BizException;
+import com.yqf.yjresource.service.impl.MinIoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -14,14 +14,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * @author yqf
+ */
 @Api(tags = "文件接口")
 @RestController
 @RequestMapping("/files")
 @Slf4j
 @AllArgsConstructor
-public class MinIOController {
+public class MinIoController {
 
-    private MinIOService minIOService;
+    private MinIoService minIoService;
 
     @PostMapping
     @ApiOperation(value = "文件上传", httpMethod = "POST")
@@ -36,7 +39,7 @@ public class MinIOController {
         try {
             String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
             String objectName = IdUtil.simpleUUID() + "." + suffix;
-            String path = minIOService.putObject(bucketName, objectName, file.getInputStream());
+            String path = minIoService.putObject(bucketName, objectName, file.getInputStream());
             return Result.success(path);
         } catch (Exception e) {
             throw new BizException(e.getMessage());
@@ -53,7 +56,7 @@ public class MinIOController {
             int lastIndex = path.lastIndexOf("/");
             String bucketName = path.substring(path.lastIndexOf("/", lastIndex - 1) + 1, lastIndex);
             String objectName = path.substring(lastIndex + 1);
-            minIOService.removeObject(bucketName, objectName);
+            minIoService.removeObject(bucketName, objectName);
             return Result.success();
         } catch (Exception e) {
             e.printStackTrace();

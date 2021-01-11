@@ -17,8 +17,8 @@ spring:
 
 # 微信小程序
 weapp:
-  appid: wx99a151dc43d2637b
-  secret: a09605af8ad29ca5d18ff31c19828f37
+  appid: wx068042f058d845db
+  secret: bb2c658b87664045d99306bb325545f1
 
 # 全局参数设置
 ribbon:

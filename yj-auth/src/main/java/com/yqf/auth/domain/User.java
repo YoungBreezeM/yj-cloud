@@ -2,7 +2,7 @@ package com.yqf.auth.domain;
 
 import com.yqf.admin.dto.UserDTO;
 import com.yqf.common.core.constant.AuthConstants;
-import com.yqf.mall.ums.dto.MemberDTO;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -44,13 +44,7 @@ public class User implements UserDetails {
         }
     }
 
-    public User(MemberDTO member){
-        this.setId(member.getId());
-        this.setUsername(member.getUsername());
-        this.setPassword(AuthConstants.BCRYPT + member.getPassword());
-        this.setEnabled( Integer.valueOf(1).equals(member.getStatus()));
-        this.setClientId(member.getClientId());
-    }
+
 
 
     @Override

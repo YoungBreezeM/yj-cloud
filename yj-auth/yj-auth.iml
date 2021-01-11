@@ -20,7 +20,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="ums-api" />
+    <orderEntry type="module" module-name="admin-api" />
     <orderEntry type="library" name="Maven: com.baomidou:mybatis-plus-boot-starter:3.4.0" level="project" />
     <orderEntry type="library" name="Maven: com.baomidou:mybatis-plus:3.4.0" level="project" />
     <orderEntry type="library" name="Maven: com.baomidou:mybatis-plus-extension:3.4.0" level="project" />
@@ -51,11 +51,10 @@
     <orderEntry type="library" name="Maven: io.github.openfeign:feign-okhttp:10.10.1" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okhttp3:okhttp:3.14.9" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.17.2" level="project" />
-    <orderEntry type="module" module-name="admin-api" />
     <orderEntry type="module" module-name="common-mybatis" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:8.0.19" level="project" />
-    <orderEntry type="library" name="Maven: com.alibaba:druid-spring-boot-starter:1.1.22" level="project" />
-    <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.22" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:druid-spring-boot-starter:1.1.21" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.21" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.30" level="project" />
     <orderEntry type="module" module-name="common-web" />
     <orderEntry type="module" module-name="common-knife4j" />

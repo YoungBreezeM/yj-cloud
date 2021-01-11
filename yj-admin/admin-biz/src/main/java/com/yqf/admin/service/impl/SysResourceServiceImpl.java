@@ -32,4 +32,9 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         });
         return list;
     }
+
+    @Override
+    public SysResource listForResourceRolesByUrl(String url) {
+        return this.baseMapper.listForResourceRolesByUrl(url);
+    }
 }

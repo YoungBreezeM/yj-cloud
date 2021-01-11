@@ -143,7 +143,7 @@ public class PmsSpuServiceImpl extends ServiceImpl<PmsSpuMapper, PmsSpu> impleme
             String album = JSONUtil.toJsonStr(spuDTO.getPics());
             spu.setAlbum(album);
         }
-        this.save(spu);
+        this.updateById(spu);
 
         // 属性
         List<PmsSpuAttribute> attributes = spuBO.getAttributes();

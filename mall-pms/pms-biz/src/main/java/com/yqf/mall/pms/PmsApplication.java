@@ -8,7 +8,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@MapperScan("com.youlai.mall.pms.mapper")
+@MapperScan("com.yqf.mall.pms.mapper")
 @EnableSwagger2
 public class PmsApplication {
     public static void main(String[] args) {

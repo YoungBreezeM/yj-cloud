@@ -55,8 +55,8 @@
     <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.17.2" level="project" />
     <orderEntry type="module" module-name="common-mybatis" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:8.0.19" level="project" />
-    <orderEntry type="library" name="Maven: com.alibaba:druid-spring-boot-starter:1.1.22" level="project" />
-    <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.22" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:druid-spring-boot-starter:1.1.21" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.21" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.30" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.7" level="project" />
     <orderEntry type="module" module-name="common-knife4j" />

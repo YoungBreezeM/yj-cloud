@@ -87,8 +87,8 @@
     <orderEntry type="module" module-name="common-web" />
     <orderEntry type="module" module-name="common-mybatis" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:8.0.19" level="project" />
-    <orderEntry type="library" name="Maven: com.alibaba:druid-spring-boot-starter:1.1.22" level="project" />
-    <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.22" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:druid-spring-boot-starter:1.1.21" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.21" level="project" />
     <orderEntry type="module" module-name="common-knife4j" />
     <orderEntry type="library" name="Maven: com.github.xiaoymin:knife4j-spring-boot-starter:2.0.4" level="project" />
     <orderEntry type="library" name="Maven: com.github.xiaoymin:knife4j-spring-boot-autoconfigure:2.0.4" level="project" />

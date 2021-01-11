@@ -10,6 +10,9 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
+/**
+ * @author yqf
+ */
 @Mapper
 public interface SysResourceMapper extends BaseMapper<SysResource> {
 
@@ -20,4 +23,13 @@ public interface SysResourceMapper extends BaseMapper<SysResource> {
             @Result(property = "roleIds",column="id",many = @Many(select="com.yqf.admin.mapper.SysRoleResourceMapper.listByResourceId"))
     })
     List<SysResource> listForResourceRoles();
+
+    @Select(" select id,name,url from sys_resource where url =#{url}")
+    @Results({
+            @Result(id=true, column="id", property="id"),
+            @Result(property = "roleIds",column="id",many = @Many(select="com.yqf.admin.mapper.SysRoleResourceMapper.listByResourceId"))
+    })
+    SysResource listForResourceRolesByUrl(String url);
+
+
 }

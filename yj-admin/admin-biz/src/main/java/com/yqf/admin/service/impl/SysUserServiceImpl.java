@@ -15,6 +15,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public IPage<SysUser> list(Page<SysUser> page,SysUser user ) {
+
         List<SysUser> list = this.baseMapper.list(page,user);
         page.setRecords(list);
         return page;

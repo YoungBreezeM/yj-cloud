@@ -18,12 +18,6 @@
     <dependencies>
         <dependency>
             <groupId>com.yqf</groupId>
-            <artifactId>ums-api</artifactId>
-            <version>${yj.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.yqf</groupId>
             <artifactId>admin-api</artifactId>
             <version>${yj.version}</version>
         </dependency>

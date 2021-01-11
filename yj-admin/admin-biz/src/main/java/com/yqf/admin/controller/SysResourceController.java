@@ -117,4 +117,10 @@ public class SysResourceController {
         boolean status = iSysResourceService.removeByIds(ids);
         return Result.status(status);
     }
+
+    @PostMapping("/resourceMap")
+    public Result getResourceMap(@RequestBody SysResource resource){
+        SysResource sysResources = iSysResourceService.listForResourceRolesByUrl(resource.getUrl());
+        return Result.success(sysResources);
+    }
 }

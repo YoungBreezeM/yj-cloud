@@ -15,4 +15,6 @@ public interface UserFeignService {
 
     @GetMapping("/users/{id}")
     Result<UserDTO> loadUserByUsername(@PathVariable Object id, @RequestParam Integer queryMode);
+
+
 }

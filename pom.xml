@@ -10,7 +10,13 @@
 	<packaging>pom</packaging>
 
 	<modules>
-
+		<module>mall-oms</module>
+		<module>yj-common</module>
+		<module>yj-auth</module>
+		<module>yj-gateway</module>
+		<module>yj-admin</module>
+		<module>yj-resource</module>
+		<module>yj-grouping</module>
 	</modules>
 
 	<parent>
@@ -32,6 +38,7 @@
 		<druid.version>1.1.23</druid.version>
 		<mybatis-plus.version>3.4.0</mybatis-plus.version>
 		<minio.version>7.1.0</minio.version>
+		<ali.druid.version>1.1.21</ali.druid.version>
 		<knife4j.version>2.0.4</knife4j.version>
 		<weixin-java-miniapp.version>3.9.4.B</weixin-java-miniapp.version>
 	</properties>
@@ -88,6 +95,29 @@
 				<groupId>com.baomidou</groupId>
 				<artifactId>mybatis-plus-boot-starter</artifactId>
 				<version>${mybatis-plus.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid-spring-boot-starter</artifactId>
+				<version>${ali.druid.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-generator</artifactId>
+				<version>${mybatis-plus.version}</version>
+			</dependency>
+			<!--   生成器默认版本依赖  -->
+			<dependency>
+				<groupId>org.apache.velocity</groupId>
+				<artifactId>velocity-engine-core</artifactId>
+				<version>2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>${ali.druid.version}</version>
 			</dependency>
 
 			<dependency>
