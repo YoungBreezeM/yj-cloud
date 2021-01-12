@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yqf.yjgrouping.mapper.NotifyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yqf.yjgrouping.entity.Notify">
+        <id column="id" property="id"/>
+        <result column="sender_id" property="senderId"/>
+        <result column="reciver_id" property="reciverId"/>
+        <result column="type" property="type"/>
+        <result column="is_read" property="isRead"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, sender_id, reciver_id, type, is_read, create_time
+    </sql>
+
+</mapper>

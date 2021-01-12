@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ym.mapper.YmLinkMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ym.entity.YmLink">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="url" property="url" />
+        <result column="img" property="img" />
+        <result column="type" property="type" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, title, url, img, type, create_time
+    </sql>
+
+</mapper>
