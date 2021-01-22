@@ -1,6 +1,6 @@
 package com.yqf.yjgrouping.mapper;
 
-import com.yqf.yjgrouping.entity.Favorites;
+import com.yqf.groupingapi.entity.Favorites;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

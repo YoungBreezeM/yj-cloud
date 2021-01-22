@@ -3,7 +3,7 @@
 <mapper namespace="com.yqf.yjgrouping.mapper.AttentionMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.yqf.yjgrouping.entity.Attention">
+    <resultMap id="BaseResultMap" type="com.yqf.groupingapi.entity.Attention">
         <id column="id" property="id"/>
         <result column="from_id" property="fromId"/>
         <result column="to_id" property="toId"/>

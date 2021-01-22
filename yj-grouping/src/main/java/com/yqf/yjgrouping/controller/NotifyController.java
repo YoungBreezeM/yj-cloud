@@ -1,6 +1,9 @@
 package com.yqf.yjgrouping.controller;
 
 
+import com.yqf.yjgrouping.entity.NotifyType;
+import com.yqf.yjgrouping.service.ArticleService;
+import com.yqf.yjgrouping.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import com.yqf.common.core.result.Result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -12,8 +15,12 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import com.yqf.yjgrouping.service.NotifyService;
-import com.yqf.yjgrouping.entity.Notify;
+import com.yqf.groupingapi.entity.Notify;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 
 /**
@@ -33,6 +40,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class NotifyController {
 
     private NotifyService notifyService;
+    private UserService userService;
+    private ArticleService articleService;
 
     /**
      * 查询分页数据
@@ -49,6 +58,51 @@ public class NotifyController {
         return Result.success(result.getRecords(), result.getTotal());
     }
 
+    /**
+     * 根据用户id,通知类型查询
+     */
+    @ApiOperation(value = "用户通知表,包含了所有用户的消息详情", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户唯一标识", required = true, paramType = "path", dataType = "Object"),
+    })
+    @GetMapping(value = "/{userId}/{type}")
+    public Result getById(@PathVariable Integer userId, @PathVariable Integer type) {
+        List<Notify> notifies;
+        if (type.equals(NotifyType.Favorites) || type.equals(NotifyType.Thumb)) {
+            notifies = notifyService.getNotify(userId, NotifyType.Favorites);
+            notifies.addAll(notifyService.getNotify(userId, NotifyType.Thumb));
+            notifies.sort(Comparator.comparing(Notify::getCreateTime));
+
+        }else{
+            notifies =  notifyService.getNotify(userId, type);
+        }
+
+        for (Notify notify : notifies) {
+            notify.setUser(userService.getById(notify.getSenderId()));
+            notify.setArticle(articleService.getById(notify.getArticleId()));
+        }
+        return Result.success(notifies);
+    }
+
+    /**
+     * 根据用户id,标记通知类状态
+     */
+    @ApiOperation(value = "用户通知表,包含了所有用户的消息详情", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户唯一标识", required = true, paramType = "path", dataType = "Object"),
+    })
+    @GetMapping(value = "/status/{userId}/{type}")
+    public Result setStatusById(@PathVariable Integer userId, @PathVariable Integer type) {
+        if (type.equals(NotifyType.Favorites) || type.equals(NotifyType.Thumb)) {
+            notifyService.setStatus(userId, NotifyType.Favorites);
+            notifyService.setStatus(userId, NotifyType.Thumb);
+
+        }else{
+             notifyService.setStatus(userId, type);
+        }
+
+        return Result.success(true);
+    }
 
     /**
      * 根据id查询

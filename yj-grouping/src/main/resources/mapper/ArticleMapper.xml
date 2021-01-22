@@ -3,19 +3,21 @@
 <mapper namespace="com.yqf.yjgrouping.mapper.ArticleMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.yqf.yjgrouping.entity.Article">
-        <id column="id" property="id"/>
-        <result column="content" property="content"/>
-        <result column="images" property="images"/>
-        <result column="video" property="video"/>
-        <result column="topic_id" property="topicId"/>
-        <result column="glance" property="glance"/>
-        <result column="create_time" property="createTime"/>
+    <resultMap id="BaseResultMap" type="com.yqf.groupingapi.entity.Article">
+        <id column="id" property="id" />
+        <result column="content" property="content" />
+        <result column="media" property="media" />
+        <result column="topic_id" property="topicId" />
+        <result column="glance" property="glance" />
+        <result column="create_time" property="createTime" />
+        <result column="circle_id" property="circleId" />
+        <result column="user_id" property="userId" />
+        <result column="type" property="type" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, content, images, video, topic_id, glance, create_time
+        id, content, type, media topic_id, glance, create_time, circle_id, user_id
     </sql>
 
 </mapper>

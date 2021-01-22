@@ -30,6 +30,7 @@ public class User implements UserDetails {
 
     private String clientId;
 
+
     private Collection<SimpleGrantedAuthority> authorities;
 
     public User(UserDTO user) {

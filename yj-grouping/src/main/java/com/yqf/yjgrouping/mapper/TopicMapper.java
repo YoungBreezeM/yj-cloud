@@ -1,6 +1,6 @@
 package com.yqf.yjgrouping.mapper;
 
-import com.yqf.yjgrouping.entity.Topic;
+import com.yqf.groupingapi.entity.Topic;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

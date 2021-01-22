@@ -19,3 +19,8 @@ ribbon:
   SocketTimeout: 10000
   MaxAutoRetries: 0
   MaxAutoRetriesNextServer: 1
+
+oss:
+  endpoint: http://192.168.1.104:9000/
+  access-key: minioadmin
+  secret-key: minioadmin

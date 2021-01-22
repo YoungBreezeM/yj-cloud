@@ -1,6 +1,8 @@
 package com.yqf.yjgrouping.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yqf.groupingapi.entity.User;
 import org.springframework.web.bind.annotation.*;
 import com.yqf.common.core.result.Result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -12,8 +14,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import com.yqf.yjgrouping.service.AttentionService;
-import com.yqf.yjgrouping.entity.Attention;
+import com.yqf.groupingapi.entity.Attention;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 /**
@@ -63,13 +67,45 @@ public class AttentionController {
     }
 
     /**
+     * 根据user_id,type查询
+     */
+    @ApiOperation(value = "关注服务详情", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户唯一标识", required = true, paramType = "path", dataType = "Object"),
+    })
+    @GetMapping(value = "/{userId}/{type}")
+    public Result getByUidAndType(@PathVariable Long userId, @PathVariable Integer type) {
+        List<User> userFollow = attentionService.getUserFollow(userId, type);
+        return Result.success(userFollow);
+    }
+
+    /**
+     * 根据userid查询
+     */
+    @ApiOperation(value = "关注服务查询", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户唯一标识", required = true, paramType = "path", dataType = "Object"),
+    })
+    @PostMapping(value = "/byFromId/byToId")
+    public Result getByUid(@RequestBody Attention attention) {
+        QueryWrapper<Attention> attentionQueryWrapper = new QueryWrapper<>();
+        attentionQueryWrapper.eq("from_id",attention.getFromId()).eq("to_id",attention.getToId());
+        Attention one = attentionService.getOne(attentionQueryWrapper);
+        if (one!=null){
+            return Result.success(true);
+        }else {
+            return Result.success(false);
+        }
+
+    }
+    /**
      * 新增
      */
     @ApiOperation(value = "新增关注服务", httpMethod = "POST")
     @ApiImplicitParam(name = "attention", value = "实体对象", required = true, paramType = "body", dataType = "Attention")
     @PostMapping
     public Result insert(@RequestBody Attention attention) {
-        return Result.status(attentionService.save(attention));
+        return Result.status(attentionService.addFollow(attention));
     }
 
     /**

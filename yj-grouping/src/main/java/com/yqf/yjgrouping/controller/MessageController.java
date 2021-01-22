@@ -1,6 +1,7 @@
 package com.yqf.yjgrouping.controller;
 
 
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 import com.yqf.common.core.result.Result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -12,7 +13,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import com.yqf.yjgrouping.service.MessageService;
-import com.yqf.yjgrouping.entity.Message;
+import com.yqf.groupingapi.entity.Message;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -63,12 +64,38 @@ public class MessageController {
     }
 
     /**
+     * 获取未读统计数
+     */
+    @ApiOperation(value = "私信信息表,包含了所有用户的私信信息详情", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户唯一标识", required = true, paramType = "path", dataType = "Object"),
+    })
+    @GetMapping(value = "/num/{userId}")
+    public Result getMessageByUserId(@PathVariable("userId") Integer userId) {
+        return Result.success(messageService.getMessageList(userId));
+    }
+
+    /**
+     * 获取两用户所有对话
+     * */
+    @ApiOperation(value = "获取两用户所有对话", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户唯一标识", required = true, paramType = "path", dataType = "Object"),
+    })
+    @GetMapping(value = "/chatList/{fromId}/{toId}")
+    public Result getMessageByUserId(@PathVariable Integer fromId, @PathVariable Integer toId) {
+        return Result.success(messageService.getChatList(fromId,toId));
+    }
+
+
+    /**
      * 新增
      */
     @ApiOperation(value = "新增私信信息表,包含了所有用户的私信信息", httpMethod = "POST")
     @ApiImplicitParam(name = "message", value = "实体对象", required = true, paramType = "body", dataType = "Message")
     @PostMapping
     public Result insert(@RequestBody Message message) {
+        message.setIsRead(false);
         return Result.status(messageService.save(message));
     }
 

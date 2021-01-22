@@ -1,6 +1,8 @@
 package com.yqf.yjgrouping.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 import com.yqf.common.core.result.Result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -12,7 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import com.yqf.yjgrouping.service.FavoritesService;
-import com.yqf.yjgrouping.entity.Favorites;
+import com.yqf.groupingapi.entity.Favorites;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -51,6 +53,19 @@ public class FavoritesController {
 
 
     /**
+     * 根据userId查询文章
+     */
+    @ApiOperation(value = "详情", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户唯一标识", required = true, paramType = "path", dataType = "Object"),
+    })
+    @GetMapping(value = "/byUid/{page}/{limit}/{userId}")
+    public Result getById(@PathVariable Integer page, @PathVariable Integer limit, @PathVariable Integer userId) {
+        IPage<Favorites> userFavorites = favoritesService.getUserFavorites(page, limit, userId);
+        return Result.success(userFavorites.getRecords(),userFavorites.getTotal());
+    }
+
+    /**
      * 根据id查询
      */
     @ApiOperation(value = "详情", httpMethod = "GET")
@@ -59,6 +74,7 @@ public class FavoritesController {
     })
     @GetMapping(value = "/{id}")
     public Result getById(@PathVariable("id") Integer id) {
+
         return Result.success(favoritesService.getById(id));
     }
 
@@ -69,7 +85,8 @@ public class FavoritesController {
     @ApiImplicitParam(name = "favorites", value = "实体对象", required = true, paramType = "body", dataType = "Favorites")
     @PostMapping
     public Result insert(@RequestBody Favorites favorites) {
-        return Result.status(favoritesService.save(favorites));
+        return Result.status(favoritesService.addFavorites(favorites));
+
     }
 
     /**

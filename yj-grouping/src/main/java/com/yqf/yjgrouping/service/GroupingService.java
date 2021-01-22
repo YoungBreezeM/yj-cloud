@@ -1,6 +1,6 @@
 package com.yqf.yjgrouping.service;
 
-import com.yqf.yjgrouping.entity.Grouping;
+import com.yqf.groupingapi.entity.Grouping;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

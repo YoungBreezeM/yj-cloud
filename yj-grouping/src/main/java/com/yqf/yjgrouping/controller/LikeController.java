@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import com.yqf.yjgrouping.service.LikeService;
-import com.yqf.yjgrouping.entity.Like;
+import com.yqf.groupingapi.entity.Like;
 import org.springframework.web.bind.annotation.RestController;
 
 

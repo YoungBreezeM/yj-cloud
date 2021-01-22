@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import com.yqf.yjgrouping.service.GroupingService;
-import com.yqf.yjgrouping.entity.Grouping;
+import com.yqf.groupingapi.entity.Grouping;
 import org.springframework.web.bind.annotation.RestController;
 
 

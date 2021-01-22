@@ -3,11 +3,11 @@
 <mapper namespace="com.yqf.yjgrouping.mapper.TopicMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.yqf.yjgrouping.entity.Topic">
+    <resultMap id="BaseResultMap" type="com.yqf.groupingapi.entity.Topic">
         <id column="id" property="id"/>
         <result column="topic_name" property="topicName"/>
         <result column="dsc" property="dsc"/>
-        <result column="grouping_id" property="groupingId"/>
+        <result column="circle_id" property="circleId"/>
         <result column="user_id" property="userId"/>
         <result column="create_time" property="createTime"/>
         <result column="glance" property="glance"/>
@@ -15,7 +15,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, topic_name, dsc, grouping_id, user_id, create_time, glance
+        id, topic_name, dsc, circle_id, user_id, create_time, glance
     </sql>
 
 </mapper>

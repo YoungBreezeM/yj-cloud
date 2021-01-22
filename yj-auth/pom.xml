@@ -30,8 +30,8 @@
 
         <dependency>
             <groupId>com.yqf</groupId>
-            <artifactId>common-web</artifactId>
-            <version>${yj.version}</version>
+            <artifactId>grouping-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>

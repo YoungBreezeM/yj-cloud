@@ -1,6 +1,8 @@
 package com.yqf.admin;
 
 import cn.hutool.core.lang.Assert;
+import com.yqf.admin.mapper.SysResourceMapper;
+import com.yqf.admin.pojo.SysResource;
 import com.yqf.admin.pojo.SysUser;
 import com.yqf.admin.service.ISysMenuService;
 import com.yqf.admin.service.ISysResourceService;
@@ -25,6 +27,8 @@ public class AdminApplicationTests {
     private ISysResourceService iSysResourceService;
     @Autowired
     private ISysUserService iSysUserService;
+    @Autowired
+    private SysResourceMapper sysResourceMapper;
 
 
     @Test
@@ -45,5 +49,11 @@ public class AdminApplicationTests {
         SysUser sysUser = new SysUser();sysUser.setUsername("asd");
         iSysUserService.save(sysUser);
         System.out.println(sysUser);
+    }
+
+    @Test
+    public void listResource(){
+        SysResource sysResource = sysResourceMapper.listForResourceRolesByUrl("/yj-grouping/**");
+        System.out.println(sysResource);
     }
 }

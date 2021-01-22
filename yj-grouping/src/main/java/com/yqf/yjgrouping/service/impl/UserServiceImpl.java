@@ -1,6 +1,6 @@
 package com.yqf.yjgrouping.service.impl;
 
-import com.yqf.yjgrouping.entity.User;
+import com.yqf.groupingapi.entity.User;
 import com.yqf.yjgrouping.mapper.UserMapper;
 import com.yqf.yjgrouping.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

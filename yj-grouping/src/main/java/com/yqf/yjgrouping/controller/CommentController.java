@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import com.yqf.yjgrouping.service.CommentService;
-import com.yqf.yjgrouping.entity.Comment;
+import com.yqf.groupingapi.entity.Comment;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -63,13 +63,24 @@ public class CommentController {
     }
 
     /**
+     * 根据文章id查询
+     */
+    @ApiOperation(value = "根据详情", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "articleId", value = "文章唯一标识", required = true, paramType = "path", dataType = "Object"),
+    })
+    @GetMapping(value = "/byAid/{articleId}")
+    public Result getById( @PathVariable String articleId) {
+        return Result.success(commentService.getById(articleId));
+    }
+    /**
      * 新增
      */
     @ApiOperation(value = "新增", httpMethod = "POST")
     @ApiImplicitParam(name = "comment", value = "实体对象", required = true, paramType = "body", dataType = "Comment")
     @PostMapping
     public Result insert(@RequestBody Comment comment) {
-        return Result.status(commentService.save(comment));
+        return Result.status(commentService.addDiscuss(comment));
     }
 
     /**

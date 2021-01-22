@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import com.yqf.yjgrouping.service.CategoryService;
-import com.yqf.yjgrouping.entity.Category;
+import com.yqf.groupingapi.entity.Category;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -34,6 +34,7 @@ public class CategoryController {
 
     private CategoryService categoryService;
 
+
     /**
      * 查询分页数据
      */
@@ -43,12 +44,20 @@ public class CategoryController {
             @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "query", dataType = "Integer"),
             @ApiImplicitParam(name = "category", value = "圈子分类信息", paramType = "query", dataType = "Category")
     })
-    @GetMapping
-    public Result list(Integer page, Integer limit) {
+    @GetMapping("/pages/{page}/{limit}")
+    public Result list(@PathVariable Integer page, @PathVariable Integer limit) {
         IPage<Category> result = categoryService.page(new Page<>(page, limit));
         return Result.success(result.getRecords(), result.getTotal());
     }
 
+    @ApiOperation(value = "列表", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "category", value = "圈子分类信息", paramType = "query", dataType = "Category")
+    })
+    @GetMapping
+    public Result getList(){
+        return Result.success(categoryService.list());
+    }
 
     /**
      * 根据id查询

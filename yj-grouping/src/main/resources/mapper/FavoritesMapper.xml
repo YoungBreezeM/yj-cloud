@@ -3,7 +3,7 @@
 <mapper namespace="com.yqf.yjgrouping.mapper.FavoritesMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.yqf.yjgrouping.entity.Favorites">
+    <resultMap id="BaseResultMap" type="com.yqf.groupingapi.entity.Favorites">
         <id column="id" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="article_id" property="articleId"/>

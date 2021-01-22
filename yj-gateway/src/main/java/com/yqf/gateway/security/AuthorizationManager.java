@@ -73,9 +73,12 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
         SysResource data = resourceFeignService.getResourceMap(sysResource).getData();
         List<String> authorities = new ArrayList<>();
 
-        for (Integer roleId : data.getRoleIds()) {
-            authorities.add(AuthConstants.AUTHORITY_PREFIX+roleId);
+        if (data!=null){
+            for (Integer roleId : data.getRoleIds()) {
+                authorities.add(AuthConstants.AUTHORITY_PREFIX+roleId);
+            }
         }
+
 
         System.out.println(authorities);
 

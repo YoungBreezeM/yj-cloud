@@ -10,9 +10,12 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.yqf.auth.domain.Oauth2Token;
 import com.yqf.common.core.constant.AuthConstants;
 import com.yqf.common.core.result.Result;
+import com.yqf.common.core.result.ResultCode;
 import com.yqf.common.web.exception.BizException;
 import com.yqf.common.web.util.WebUtils;
 
+import com.yqf.groupingapi.entity.User;
+import com.yqf.groupingapi.remote.GroupingFeign;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -50,6 +53,7 @@ public class AuthController {
     private WxMaService wxService;
     private PasswordEncoder passwordEncoder;
     private KeyPair keyPair;
+    private GroupingFeign groupingFeign;
 
 
 
@@ -77,10 +81,10 @@ public class AuthController {
             throw new BizException("客户端ID不能为空");
         }
 
-//        // 微信小程序端认证处理
-//        if (AuthConstants.WEAPP_CLIENT_ID.equals(clientId)) {
-//            return this.handleForWxAppAuth(principal, parameters);
-//        }
+        // 微信小程序端认证处理
+        if (AuthConstants.WEAPP_CLIENT_ID.equals(clientId)) {
+            return this.handleForWxAppAuth(principal, parameters);
+        }
 
         OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
         Oauth2Token oauth2Token = Oauth2Token.builder()
@@ -107,63 +111,61 @@ public class AuthController {
         return Result.success();
     }
 
-//    private Result handleForWxAppAuth(Principal principal, Map<String, String> parameters) throws WxErrorException, HttpRequestMethodNotSupportedException {
-//
-//        String code = parameters.get("code");
-//        if (StrUtil.isBlank(code)) {
-//            throw new BizException("code不能为空");
-//        }
-//
-//        WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(code);
-//        String openid = session.getOpenid();
-//        String sessionKey = session.getSessionKey();
-//
-//        Result<User> result = groupingFeign.getByOpenId(openid);
-//
-//
-//        String username = null;
-//        if (ResultCode.USER_NOT_EXIST.getCode().equals(result.getCode())) { // 微信授权登录 会员信息不存在时 注册会员
-//            String encryptedData = parameters.get("encryptedData");
-//            String iv = parameters.get("iv");
-//
-//            WxMaUserInfo userInfo = wxService.getUserService().getUserInfo(sessionKey, encryptedData, iv);
-//            if (userInfo == null) {
-//                throw new BizException("获取用户信息失败");
-//            }
-//
-//
-//            User user = new User();
-//            user.setNickName(userInfo.getNickName());
-//            user.setAvatarUrl(userInfo.getAvatarUrl());
-//            user.setGender(userInfo.getGender());
-//            user.setOpenid(openid);
-//            // 加密密码移除前缀加密方式 {bcrypt}
-//            user.setPassword(passwordEncoder.encode(openid).replace(AuthConstants.BCRYPT, Strings.EMPTY));
-//            user.setStatus(true);
-//
-//            Result res = groupingFeign.insert(user);
-//            if (!ResultCode.SUCCESS.getCode().equals(res.getCode())) {
-//                throw new BizException("注册会员失败");
-//            }
-//            username = openid;
-//        } else {
-//            User data = result.getData();
-//
-//        }
-//
-//        // oauth2认证参数对应授权登录时注册会员的username、password信息，模拟通过oauth2的密码模式认证
-//        parameters.put("username", username);
-//        parameters.put("password", username);
-//
-//        OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
-//        Oauth2Token oauth2Token = Oauth2Token.builder()
-//                .token(oAuth2AccessToken.getValue())
-//                .refreshToken(oAuth2AccessToken.getRefreshToken().getValue())
-//                .expiresIn(oAuth2AccessToken.getExpiresIn())
-//                .build();
-//        return Result.success(oauth2Token);
-//
-//    }
+    private Result handleForWxAppAuth(Principal principal, Map<String, String> parameters) throws WxErrorException, HttpRequestMethodNotSupportedException {
+
+        String code = parameters.get("code");
+        if (StrUtil.isBlank(code)) {
+            throw new BizException("code不能为空");
+        }
+
+        WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(code);
+        String openid = session.getOpenid();
+        String sessionKey = session.getSessionKey();
+
+        Result<User> result = groupingFeign.getByOpenId(openid);
+
+
+        String username = null;
+        // 微信授权登录 会员信息不存在时 注册会员
+        if (result.getData()==null) {
+            String encryptedData = parameters.get("encryptedData");
+            String iv = parameters.get("iv");
+
+            WxMaUserInfo userInfo = wxService.getUserService().getUserInfo(sessionKey, encryptedData, iv);
+            if (userInfo == null) {
+                throw new BizException("获取用户信息失败");
+            }
+
+
+            User user = new User();
+            user.setNickName(userInfo.getNickName());
+            user.setAvatarUrl(userInfo.getAvatarUrl());
+            user.setGender(userInfo.getGender());
+            user.setOpenid(openid);
+            user.setCity(userInfo.getCity());
+            user.setProvince(userInfo.getProvince());
+            // 加密密码移除前缀加密方式 {bcrypt}
+            user.setPassword(openid);
+            user.setStatus(true);
+
+            Result res = groupingFeign.insert(user);
+            if (!ResultCode.SUCCESS.getCode().equals(res.getCode())) {
+                throw new BizException("注册会员失败");
+            }
+
+        }
+        // oauth2认证参数对应授权登录时注册会员的username、password信息，模拟通过oauth2的密码模式认证
+        parameters.put(AuthConstants.JWT_OPEN_ID_KEY, result.getData().getOpenid());
+
+        OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
+        Oauth2Token oauth2Token = Oauth2Token.builder()
+                .token(oAuth2AccessToken.getValue())
+                .refreshToken(oAuth2AccessToken.getRefreshToken().getValue())
+                .expiresIn(oAuth2AccessToken.getExpiresIn())
+                .build();
+        return Result.success(oauth2Token);
+
+    }
 
     @GetMapping("/public_key")
     public Map<String, Object> getKey() {

@@ -3,17 +3,18 @@
 <mapper namespace="com.yqf.yjgrouping.mapper.CategoryMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.yqf.yjgrouping.entity.Category">
+    <resultMap id="BaseResultMap" type="com.yqf.groupingapi.entity.Category">
         <id column="id" property="id"/>
         <result column="category_name" property="categoryName"/>
         <result column="sort" property="sort"/>
         <result column="is_top" property="isTop"/>
         <result column="create_time" property="createTime"/>
+        <result column="cover_image" property="coverImage"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, category_name, sort, is_top, create_time
+        id, category_name, sort, is_top, create_time,cover_image
     </sql>
 
 </mapper>

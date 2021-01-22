@@ -3,7 +3,7 @@
 <mapper namespace="com.yqf.yjgrouping.mapper.LikeMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.yqf.yjgrouping.entity.Like">
+    <resultMap id="BaseResultMap" type="com.yqf.groupingapi.entity.Like">
         <id column="id" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="article_id" property="articleId"/>

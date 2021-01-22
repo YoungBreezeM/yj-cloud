@@ -4,7 +4,8 @@ package com.yqf.yjresource.controller;
 import cn.hutool.core.util.IdUtil;
 import com.yqf.common.core.result.Result;
 import com.yqf.common.web.exception.BizException;
-import com.yqf.yjresource.service.impl.MinIoService;
+import com.yqf.yjresource.config.MyOss;
+import com.yqf.yjresource.service.impl.MinIOService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -24,12 +25,12 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class MinIoController {
 
-    private MinIoService minIoService;
+    private MinIOService minIoService;
 
     @PostMapping
     @ApiOperation(value = "文件上传", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "file", value = "文件", paramType = "form", dataType = "__file"),
+            @ApiImplicitParam(name = "file", value = "文件", paramType = "form", dataType = "file"),
             @ApiImplicitParam(name = "bucket_name", value = "桶名称", paramType = "query", dataType = "string")
     })
     public Result<String> upload(

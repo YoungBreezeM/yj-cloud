@@ -1,7 +1,14 @@
 package com.yqf.yjgrouping.controller;
 
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yqf.common.core.constant.AuthConstants;
+import com.yqf.groupingapi.entity.Article;
+import com.yqf.groupingapi.entity.Attention;
+import com.yqf.yjgrouping.service.ArticleService;
+import com.yqf.yjgrouping.service.AttentionService;
 import org.springframework.web.bind.annotation.*;
 import com.yqf.common.core.result.Result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -13,8 +20,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import com.yqf.yjgrouping.service.UserService;
-import com.yqf.yjgrouping.entity.User;
+import com.yqf.groupingapi.entity.User;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -34,6 +43,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private UserService userService;
+    private ArticleService articleService;
+    private AttentionService attentionService;
 
     /**
      * 查询分页数据
@@ -60,7 +71,22 @@ public class UserController {
     })
     @GetMapping(value = "/{id}")
     public Result getById(@PathVariable("id") Integer id) {
-        return Result.success(userService.getById(id));
+        User one = userService.getById(id);
+        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
+        articleQueryWrapper.eq("user_id",one.getId());
+        int count = articleService.count(articleQueryWrapper);
+        one.setArticles(count);
+
+        QueryWrapper<Attention> attentionQueryWrapper = new QueryWrapper<>();
+        attentionQueryWrapper.eq("from_id",one.getId());
+        int count1 = attentionService.count(attentionQueryWrapper);
+        one.setAttentions(count1);
+
+        attentionQueryWrapper.clear();
+        attentionQueryWrapper.eq("to_id",one.getId());
+        int count2 = attentionService.count(attentionQueryWrapper);
+        one.setFans(count2);
+        return Result.success(one);
     }
 
     /**
@@ -70,14 +96,42 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "openId", value = "第三方登陆唯一标识", required = true, paramType = "path", dataType = "Object"),
     })
-    @GetMapping(value = "/{openId}")
-    public Result getByOpenId(@PathVariable("openId") String openId) {
+    @GetMapping(value = "openid/{openId}")
+    public Result<User> getByOpenId(@PathVariable("openId") String openId) {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("openid", openId);
         User one = userService.getOne(userQueryWrapper);
         return Result.success(one);
     }
 
+    @ApiOperation(value = "微信用户详情", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "token", value = "系统令牌", required = true, paramType = "path", dataType = "Object"),
+    })
+    @GetMapping("/me")
+    public Result<User> getByOpenId(HttpServletRequest  request) {
+        String jwtPayload = request.getHeader(AuthConstants.JWT_PAYLOAD_KEY);
+        JSONObject jsonObject = JSONUtil.parseObj(jwtPayload);
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("openid", jsonObject.get(AuthConstants.JWT_OPEN_ID_KEY));
+        User one = userService.getOne(userQueryWrapper);
+
+        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
+        articleQueryWrapper.eq("user_id",one.getId());
+        int count = articleService.count(articleQueryWrapper);
+        one.setArticles(count);
+
+        QueryWrapper<Attention> attentionQueryWrapper = new QueryWrapper<>();
+        attentionQueryWrapper.eq("from_id",one.getId());
+        int count1 = attentionService.count(attentionQueryWrapper);
+        one.setAttentions(count1);
+
+        attentionQueryWrapper.clear();
+        attentionQueryWrapper.eq("to_id",one.getId());
+        int count2 = attentionService.count(attentionQueryWrapper);
+        one.setFans(count2);
+        return Result.success(one);
+    }
 
     /**
      * 新增
@@ -85,7 +139,7 @@ public class UserController {
     @ApiOperation(value = "新增微信用户", httpMethod = "POST")
     @ApiImplicitParam(name = "user", value = "实体对象", required = true, paramType = "body", dataType = "User")
     @PostMapping
-    public Result insert(@RequestBody User user) {
+    public Result<Boolean> insert(@RequestBody User user) {
         return Result.status(userService.save(user));
     }
 

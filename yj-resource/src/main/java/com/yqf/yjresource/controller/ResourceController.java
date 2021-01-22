@@ -85,7 +85,7 @@ public class ResourceController {
     /**
     * 修改
     */
-    @ApiOperation(value = "修改资源服务", httpMethod = "Put")
+    @ApiOperation(value = "修改资源服务", httpMethod = "PUT")
     @ApiImplicitParams({
       @ApiImplicitParam(name = "resource", value = "实体JSON对象", required = true, paramType = "body", dataType = "Resource")
     })

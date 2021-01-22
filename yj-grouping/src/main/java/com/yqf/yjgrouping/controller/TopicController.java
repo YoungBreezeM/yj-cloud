@@ -1,6 +1,9 @@
 package com.yqf.yjgrouping.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yqf.groupingapi.entity.Circle;
+import com.yqf.groupingapi.entity.MemberContent;
 import org.springframework.web.bind.annotation.*;
 import com.yqf.common.core.result.Result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -12,7 +15,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import com.yqf.yjgrouping.service.TopicService;
-import com.yqf.yjgrouping.entity.Topic;
+import com.yqf.groupingapi.entity.Topic;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -45,6 +48,56 @@ public class TopicController {
     })
     @GetMapping
     public Result list(Integer page, Integer limit) {
+        IPage<Topic> result = topicService.page(new Page<>(page, limit));
+        return Result.success(result.getRecords(), result.getTotal());
+    }
+
+    /**
+     * 根据circle_id查询分页数据
+     */
+    @ApiOperation(value = "列表分页", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "页码", paramType = "query", dataType = "Integer"),
+            @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "query", dataType = "Integer"),
+            @ApiImplicitParam(name = "circleId", value = "圈子id", paramType = "query", dataType = "Integer")
+    })
+    @GetMapping("/pages/{page}/{limit}/{circleId}")
+    public Result list(@PathVariable Integer page, @PathVariable Integer limit,@PathVariable Integer circleId) {
+
+        QueryWrapper<Topic> circleQueryWrapper = new QueryWrapper<>();
+        circleQueryWrapper.eq("circle_id",circleId);
+
+        IPage<Topic> result = topicService.page(new Page<>(page, limit),circleQueryWrapper);
+        return Result.success(result.getRecords(), result.getTotal());
+    }
+
+    /**
+     * 根据user_id查询分页数据
+     */
+    @ApiOperation(value = "查询用户话题列表分页", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "页码", paramType = "query", dataType = "Integer"),
+            @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "query", dataType = "Integer"),
+            @ApiImplicitParam(name = "userId", value = "用户id", paramType = "query", dataType = "Integer")
+    })
+    @GetMapping("/byUid/pages/{page}/{limit}/{userId}")
+    public Result listByUid(@PathVariable Integer page, @PathVariable Integer limit,@PathVariable Integer userId) {
+        IPage<Topic> topicKList = topicService.getTopicKList(page, limit, userId);
+        return Result.success(topicKList.getRecords(),topicKList.getTotal());
+    }
+
+    /**
+     * 查找最热话题
+     * */
+    @ApiOperation(value = "最热列表分页", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "页码", paramType = "query", dataType = "Integer"),
+            @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "query", dataType = "Integer"),
+    })
+    @GetMapping("/pages/{page}/{limit}")
+    public Result hotList(@PathVariable Integer page, @PathVariable Integer limit) {
+
+
         IPage<Topic> result = topicService.page(new Page<>(page, limit));
         return Result.success(result.getRecords(), result.getTotal());
     }

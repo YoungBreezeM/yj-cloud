@@ -1,6 +1,7 @@
 package com.yqf.yjgrouping.service;
 
-import com.yqf.yjgrouping.entity.Topic;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.yqf.groupingapi.entity.Topic;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -13,4 +14,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TopicService extends IService<Topic> {
 
+    /**
+     * 获取用户的话题 分页
+     * @param page
+     * @param limit
+     * @param useId
+     * @return p
+     * */
+    IPage<Topic> getTopicKList(Integer page,Integer limit,Integer useId);
 }

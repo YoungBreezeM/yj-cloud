@@ -3,18 +3,20 @@
 <mapper namespace="com.yqf.yjgrouping.mapper.NotifyMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.yqf.yjgrouping.entity.Notify">
+    <resultMap id="BaseResultMap" type="com.yqf.groupingapi.entity.Notify">
         <id column="id" property="id"/>
         <result column="sender_id" property="senderId"/>
-        <result column="reciver_id" property="reciverId"/>
+        <result column="receiver_id" property="receiverId"/>
         <result column="type" property="type"/>
         <result column="is_read" property="isRead"/>
         <result column="create_time" property="createTime"/>
+        <result column="content" property="content"/>
+        <result column="article_id" property="articleId"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, sender_id, reciver_id, type, is_read, create_time
+        id, sender_id, receiver_id, type, is_read, create_time,content,article_id
     </sql>
 
 </mapper>

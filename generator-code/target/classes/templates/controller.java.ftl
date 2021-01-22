@@ -62,8 +62,8 @@ public class ${table.controllerName} {
       @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "query", dataType = "Integer"),
       @ApiImplicitParam(name = "${entity?uncap_first}", value = "${table.comment!}信息", paramType = "query", dataType = "${entity}")
     })
-    @GetMapping
-    public Result list(Integer page, Integer limit) {
+    @GetMapping("/pages/{page}/{limit}")
+    public Result list(@PathVariable Integer page, @PathVariable Integer limit) {
        IPage<${entity}> result = ${table.serviceName?uncap_first}.page(new Page<>(page, limit));
        return Result.success(result.getRecords(), result.getTotal());
     }

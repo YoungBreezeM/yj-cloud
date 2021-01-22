@@ -59,6 +59,8 @@ public interface AuthConstants {
 
     String JWT_CLIENT_ID_KEY = "client_id";
 
+    String JWT_OPEN_ID_KEY = "openid";
+
     /**
      * 有来商城后台管理客户端ID
      */

@@ -3,20 +3,18 @@
 <mapper namespace="com.yqf.yjgrouping.mapper.GroupingMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.yqf.yjgrouping.entity.Grouping">
+    <resultMap id="BaseResultMap" type="com.yqf.groupingapi.entity.Grouping">
         <id column="id" property="id"/>
-        <result column="group_name" property="groupName"/>
-        <result column="category_id" property="categoryId"/>
-        <result column="user_id" property="userId"/>
-        <result column="create_time" property="createTime"/>
-        <result column="dsc" property="dsc"/>
-        <result column="cover" property="cover"/>
-        <result column="background" property="background"/>
+<!--        <result column="group_name" property="groupName"/>-->
+<!--&lt;!&ndash;        <result column="category_id" property="categoryId"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result column="user_id" property="userId"/>&ndash;&gt;-->
+<!--        <result column="create_time" property="createTime"/>-->
+
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, group_name, category_id, user_id, create_time, dsc, cover, background
+        id
     </sql>
 
 </mapper>

@@ -1,8 +1,10 @@
 package com.yqf.auth.config;
 
 import cn.hutool.http.HttpStatus;
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.yqf.auth.domain.User;
+import com.yqf.auth.domain.WxUser;
 import com.yqf.auth.filter.CustomClientCredentialsTokenEndpointFilter;
 import com.yqf.auth.service.JdbcClientDetailsServiceImpl;
 import com.yqf.auth.service.UserDetailsServiceImpl;
@@ -144,10 +146,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public TokenEnhancer tokenEnhancer() {
         return (accessToken, authentication) -> {
+
             Map<String, Object> map = new HashMap<>(2);
             User user = (User) authentication.getUserAuthentication().getPrincipal();
+            JSONObject jsonObject = JSONUtil.parseObj(authentication.getUserAuthentication().getDetails());
+
+
             map.put(AuthConstants.JWT_USER_ID_KEY, user.getId());
             map.put(AuthConstants.JWT_CLIENT_ID_KEY, user.getClientId());
+            map.put(AuthConstants.JWT_OPEN_ID_KEY,jsonObject.get("openid"));
             ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(map);
             return accessToken;
         };
