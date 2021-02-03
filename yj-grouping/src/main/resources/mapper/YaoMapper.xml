@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yqf.yjgrouping.mapper.YaoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yqf.yjgrouping.entity.Yao">
+        <id column="id" property="id" />
+        <result column="yaoName" property="yaoName" />
+        <result column="base_gua_id" property="baseGuaId" />
+        <result column="yaoText" property="yaoText" />
+        <result column="pos" property="pos" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, yaoName, base_gua_id, yaoText, pos
+    </sql>
+
+</mapper>
