@@ -53,4 +53,12 @@ public class Message implements Serializable {
     @TableField(exist = false)
     private User user;
 
+    /**消息发送者*/
+    @TableField(exist = false)
+    private User sender;
+
+    /**消息接受者*/
+    @TableField(exist = false)
+    private User receiver;
+
 }

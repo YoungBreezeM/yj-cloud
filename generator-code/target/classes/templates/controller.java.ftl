@@ -11,6 +11,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import java.util.List;
+
 import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${entity};
 <#if restControllerStyle>
@@ -92,13 +94,13 @@ public class ${table.controllerName} {
     }
 
     /**
-    * 删除
+    * 批量删除
     */
     @ApiOperation(value = "删除${table.comment!}", httpMethod = "DELETE")
-    @ApiImplicitParam(name = "id", value = "id唯一标识", required = true, paramType = "query", allowMultiple = true, dataType = "Integer")
-    @DeleteMapping(value = "/{id}")
-    public Result deleteById(@PathVariable("id") Integer id) {
-        return Result.status(${table.serviceName?uncap_first}.removeById(id));
+    @ApiImplicitParam(name = "ids", value = "要删除的id数组", required = true, paramType = "query", allowMultiple = true, dataType = "Integer")
+    @PostMapping(value = "/deleteByIds")
+    public Result deleteById(@RequestBody List<Long> ids) {
+        return Result.status(${table.serviceName?uncap_first}.removeByIds(ids));
     }
 
     /**

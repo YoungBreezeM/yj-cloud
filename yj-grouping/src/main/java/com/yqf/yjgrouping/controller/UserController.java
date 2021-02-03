@@ -9,6 +9,7 @@ import com.yqf.groupingapi.entity.Article;
 import com.yqf.groupingapi.entity.Attention;
 import com.yqf.yjgrouping.service.ArticleService;
 import com.yqf.yjgrouping.service.AttentionService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 import com.yqf.common.core.result.Result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -24,6 +25,9 @@ import com.yqf.groupingapi.entity.User;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -55,8 +59,8 @@ public class UserController {
             @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "query", dataType = "Integer"),
             @ApiImplicitParam(name = "user", value = "微信用户信息", paramType = "query", dataType = "User")
     })
-    @GetMapping
-    public Result list(Integer page, Integer limit) {
+    @GetMapping("{page}/{limit}")
+    public Result list(@PathVariable Integer page, @PathVariable Integer limit) {
         IPage<User> result = userService.page(new Page<>(page, limit));
         return Result.success(result.getRecords(), result.getTotal());
     }
@@ -115,22 +119,26 @@ public class UserController {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("openid", jsonObject.get(AuthConstants.JWT_OPEN_ID_KEY));
         User one = userService.getOne(userQueryWrapper);
+        if(one!=null){
+            QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
+            articleQueryWrapper.eq("user_id",one.getId());
+            int count = articleService.count(articleQueryWrapper);
+            one.setArticles(count);
 
-        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
-        articleQueryWrapper.eq("user_id",one.getId());
-        int count = articleService.count(articleQueryWrapper);
-        one.setArticles(count);
+            QueryWrapper<Attention> attentionQueryWrapper = new QueryWrapper<>();
+            attentionQueryWrapper.eq("from_id",one.getId());
+            int count1 = attentionService.count(attentionQueryWrapper);
+            one.setAttentions(count1);
 
-        QueryWrapper<Attention> attentionQueryWrapper = new QueryWrapper<>();
-        attentionQueryWrapper.eq("from_id",one.getId());
-        int count1 = attentionService.count(attentionQueryWrapper);
-        one.setAttentions(count1);
+            attentionQueryWrapper.clear();
+            attentionQueryWrapper.eq("to_id",one.getId());
+            int count2 = attentionService.count(attentionQueryWrapper);
+            one.setFans(count2);
+            return Result.success(one);
+        }else {
+            return Result.failed();
+        }
 
-        attentionQueryWrapper.clear();
-        attentionQueryWrapper.eq("to_id",one.getId());
-        int count2 = attentionService.count(attentionQueryWrapper);
-        one.setFans(count2);
-        return Result.success(one);
     }
 
     /**
@@ -152,6 +160,17 @@ public class UserController {
     public Result deleteById(@PathVariable("id") Integer id) {
         return Result.status(userService.removeById(id));
     }
+
+    /**
+     * 批量删除
+     */
+    @ApiOperation(value = "删除微信用户", httpMethod = "DELETE")
+    @ApiImplicitParam(name = "ids[]", value = "id集合", required = true, paramType = "query", allowMultiple = true, dataType = "Integer")
+    @PostMapping("/delete/byIds")
+    public Result deleteByIds(@RequestBody List<Long> ids ) {
+        return Result.status(userService.removeByIds(ids));
+    }
+
 
     /**
      * 修改

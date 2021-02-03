@@ -11,7 +11,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @MapperScan("com.yqf.yjgrouping.mapper")
 @EnableSwagger2
 @EnableDiscoveryClient
-public class YjGroupingApplication {
+public class  YjGroupingApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(YjGroupingApplication.class, args);

@@ -3,6 +3,8 @@ package com.yqf.yjgrouping.service;
 import com.yqf.groupingapi.entity.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 服务类
@@ -25,5 +27,12 @@ public interface CommentService extends IService<Comment> {
    * @return I
    * */
   Integer articleCommentCount(Long articleId);
+
+  /**
+   * 查找文章的评论
+   * @param articleId
+   * @return list
+   * */
+  List<Comment> getCommentByArticleId(Long articleId);
 
 }

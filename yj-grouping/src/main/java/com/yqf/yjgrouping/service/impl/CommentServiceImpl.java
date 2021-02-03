@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -65,5 +66,16 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         queryWrapper.clear();
         queryWrapper.eq("article_id",articleId);
         return commentService.count(queryWrapper);
+    }
+
+    @Override
+    public List<Comment> getCommentByArticleId(Long articleId) {
+        queryWrapper.clear();
+        queryWrapper.eq("article_id",articleId);
+        List<Comment> list = commentService.list(queryWrapper);
+        for (Comment comment : list) {
+            comment.setUser(userService.getById(comment.getUserId()));
+        }
+        return list;
     }
 }

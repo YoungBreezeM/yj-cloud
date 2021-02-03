@@ -71,6 +71,7 @@ public class ArticleController {
             commentQueryWrapper.eq("article_id",record.getId());
             record.setCommentCount(commentService.count(commentQueryWrapper));
             record.setUser(user);
+            record.setComments(commentService.getCommentByArticleId(record.getId()));
             record.setCircle(circle);
         }
        return Result.success(result.getRecords(), result.getTotal());
@@ -108,6 +109,35 @@ public class ArticleController {
         }
         return Result.success(rs);
 
+    }
+
+    /**
+     * 根据id查询
+     */
+    @ApiOperation(value = "详情", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户唯一标识", required = true, paramType = "path", dataType = "Object"),
+    })
+    @GetMapping(value = "/one/{id}")
+    public Result getByIdOne(@PathVariable Integer id){
+        Article article = articleService.getById(id);
+        User user = userService.getById(article.getUserId());
+        Circle circle = circleService.getById(article.getCircleId());
+        Topic topic = topicService.getById(article.getTopicId());
+        QueryWrapper<Comment> commentQueryWrapper = new QueryWrapper<>();
+        commentQueryWrapper.eq("article_id",article.getId());
+        List<Comment> comments = commentService.list(commentQueryWrapper);
+        article.setUser(user);
+        article.setCircle(circle);
+        article.setTopic(topic);
+
+        //查找评论用户
+        for (Comment comment : comments) {
+            User byId = userService.getById(comment.getUserId());
+            comment.setUser(byId);
+        }
+        article.setComments(comments);
+        return Result.success(article);
     }
 
     /**
@@ -249,6 +279,16 @@ public class ArticleController {
         rs.put("list",result.getRecords());
         rs.put("total",result.getTotal());
         return Result.success(rs);
+    }
+
+    /**
+     * 批量删除
+     */
+    @ApiOperation(value = "删除文章", httpMethod = "POST")
+    @ApiImplicitParam(name = "ids", value = "id唯一标识", required = true, paramType = "query", allowMultiple = true, dataType = "Integer")
+    @PostMapping("/delete/byIds")
+    public Result deleteByIds(@RequestBody List<Long> ids) {
+        return Result.status(articleService.removeByIds(ids));
     }
 
     /**

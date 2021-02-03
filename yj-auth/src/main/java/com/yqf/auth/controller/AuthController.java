@@ -142,11 +142,11 @@ public class AuthController {
             user.setAvatarUrl(userInfo.getAvatarUrl());
             user.setGender(userInfo.getGender());
             user.setOpenid(openid);
-            user.setCity(userInfo.getCity());
+            user.setCity(userInfo.getCountry());
             user.setProvince(userInfo.getProvince());
             // 加密密码移除前缀加密方式 {bcrypt}
             user.setPassword(openid);
-            user.setStatus(true);
+            user.setStatus(1);
 
             Result res = groupingFeign.insert(user);
             if (!ResultCode.SUCCESS.getCode().equals(res.getCode())) {
@@ -155,7 +155,7 @@ public class AuthController {
 
         }
         // oauth2认证参数对应授权登录时注册会员的username、password信息，模拟通过oauth2的密码模式认证
-        parameters.put(AuthConstants.JWT_OPEN_ID_KEY, result.getData().getOpenid());
+        parameters.put(AuthConstants.JWT_OPEN_ID_KEY, openid);
 
         OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
         Oauth2Token oauth2Token = Oauth2Token.builder()

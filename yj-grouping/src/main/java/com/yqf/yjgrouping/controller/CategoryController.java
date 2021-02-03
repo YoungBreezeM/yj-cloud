@@ -15,6 +15,8 @@ import com.yqf.yjgrouping.service.CategoryService;
 import com.yqf.groupingapi.entity.Category;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 
 /**
  * <p>
@@ -89,6 +91,16 @@ public class CategoryController {
     @DeleteMapping(value = "/{id}")
     public Result deleteById(@PathVariable("id") Integer id) {
         return Result.status(categoryService.removeById(id));
+    }
+
+    /**
+     * 批量删除
+     */
+    @ApiOperation(value = "删除圈子分类", httpMethod = "POST")
+    @ApiImplicitParam(name = "id", value = "id唯一标识", required = true, paramType = "query", allowMultiple = true, dataType = "Integer")
+    @PostMapping("/delete/byIds")
+    public Result deleteByIds(@RequestBody List<Long> ids) {
+        return Result.status(categoryService.removeByIds(ids));
     }
 
     /**

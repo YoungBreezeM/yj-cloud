@@ -1,6 +1,8 @@
 package com.yqf.yjgrouping.controller;
 
 
+import com.yqf.groupingapi.entity.UserCircle;
+import com.yqf.yjgrouping.service.UserService;
 import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 import com.yqf.common.core.result.Result;
@@ -15,6 +17,8 @@ import io.swagger.annotations.ApiOperation;
 import com.yqf.yjgrouping.service.MessageService;
 import com.yqf.groupingapi.entity.Message;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 /**
@@ -34,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessageController {
 
     private MessageService messageService;
+    private UserService userService;
 
     /**
      * 查询分页数据
@@ -42,13 +47,19 @@ public class MessageController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页码", paramType = "query", dataType = "Integer"),
             @ApiImplicitParam(name = "limit", value = "每页数量", paramType = "query", dataType = "Integer"),
-            @ApiImplicitParam(name = "message", value = "私信信息表,包含了所有用户的私信信息信息", paramType = "query", dataType = "Message")
+            @ApiImplicitParam(name = "message", value = "信息", paramType = "query", dataType = "UserCircle")
     })
-    @GetMapping
-    public Result list(Integer page, Integer limit) {
+    @GetMapping("/pages/{page}/{limit}")
+    public Result list(@PathVariable Integer page, @PathVariable Integer limit) {
         IPage<Message> result = messageService.page(new Page<>(page, limit));
-        return Result.success(result.getRecords(), result.getTotal());
+        List<Message> records = result.getRecords();
+        for (Message record : records) {
+            record.setSender(userService.getById(record.getSenderId()));
+            record.setReceiver(userService.getById(record.getReceiverId()));
+        }
+        return Result.success(records, result.getTotal());
     }
+
 
 
     /**
@@ -87,6 +98,15 @@ public class MessageController {
         return Result.success(messageService.getChatList(fromId,toId));
     }
 
+    /**
+     * 批量删除
+     */
+    @ApiOperation(value = "删除消息", httpMethod = "POST")
+    @ApiImplicitParam(name = "ids", value = "id唯一标识", required = true, paramType = "query", allowMultiple = true, dataType = "Integer")
+    @PostMapping("/delete/byIds")
+    public Result deleteByIds(@RequestBody List<Long> ids) {
+        return Result.status(messageService.removeByIds(ids));
+    }
 
     /**
      * 新增

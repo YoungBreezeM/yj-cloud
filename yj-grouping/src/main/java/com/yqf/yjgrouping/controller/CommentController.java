@@ -15,6 +15,8 @@ import com.yqf.yjgrouping.service.CommentService;
 import com.yqf.groupingapi.entity.Comment;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 
 /**
  * <p>
@@ -84,13 +86,13 @@ public class CommentController {
     }
 
     /**
-     * 删除
+     * 批量删除
      */
     @ApiOperation(value = "删除", httpMethod = "DELETE")
     @ApiImplicitParam(name = "id", value = "id唯一标识", required = true, paramType = "query", allowMultiple = true, dataType = "Integer")
-    @DeleteMapping(value = "/{id}")
-    public Result deleteById(@PathVariable("id") Integer id) {
-        return Result.status(commentService.removeById(id));
+    @PostMapping(value = "/deleteByIds")
+    public Result deleteById(@RequestBody List<Long> ids) {
+        return Result.status(commentService.removeByIds(ids));
     }
 
     /**
